@@ -1,0 +1,115 @@
+Menu="Utilities"
+Type="xmenu"
+Title="Tree Backup"
+Icon="tree"
+Tag="tree"
+Markdown="false"
+---
+<?
+/* Copyright Derek Macias (parts of code from NUT package)
+ * Copyright macester (parts of code from NUT package)
+ * Copyright gfjardim (parts of code from NUT package)
+ * Copyright SimonF (parts of code from NUT package)
+ * Copyright Dan Landon (parts of code from Web GUI)
+ * Copyright Bergware International (parts of code from Web GUI)
+ * Copyright Lime Technology (any and all other parts of Unraid)
+ *
+ * Copyright desertwitch (as author and maintainer of this file)
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License 2
+ * as published by the Free Software Foundation.
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ */
+?>
+
+<style>
+    .ms-collapsible-bar {
+        cursor: pointer;
+        height: 3px !important;
+        text-align: center !important;
+        font-size: 8px !important;
+        color: #666;
+        line-height: 1;
+        padding: 0;
+    }
+</style>
+
+<table class="tablesorter shift" autofocus>
+    <tbody>
+        <tr id="ms-collapsible">
+            <td style="width: 300px; text-align: center; vertical-align: middle; white-space: nowrap;">
+                <div style="margin:15px;">
+                    <i class="fa fa-tree" style="width: 160px;"></i>
+                    <div style="margin-top:10px;">
+                    <span style="font-size:1.5rem;font-weight:bold;">Tree Backup</span><br>
+                    Keep track of what files you had in case of data loss.
+                    </div>
+                </div>
+            </td>
+
+            <td style="width: 100%;"></td>
+
+            <td style="text-align: right; vertical-align:middle; white-space: nowrap;font-size:1.5rem;">
+                <a href="https://github.com/desertwitch/mirrorshuttle#readme" style="margin: 0 15px;" target="_blank">Documentation</a><br>
+                <a href="https://pkg.go.dev/github.com/desertwitch/mirrorshuttle" style="margin: 0 15px;" target="_blank">Go Reference Website</a><br>
+                <a href="https://forums.unraid.net/topic/191119-plugin-mirrorshuttle-for-unraid/" style="margin: 0 15px;" target="_blank">Support Thread (Forums)</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div style="margin-right:15px;">
+    <form markdown="0" id="dwtreebak-operations" name="dwtreebak_operations" method="POST" action="/update.php" target="progressFrame">
+        <input type="hidden" id="dwtreebak-ops-cmd" name="#command" value="/usr/local/emhttp/plugins/dwtreebak/scripts/none">
+
+        <span style="float:right;text-align:right;">
+            <input class="dwtreebak-run dwtreebak-tip" type="button" id="dwtreebak-init" value="MANUAL INIT" title="Mirrors the structure of the configured target directory into the configured mirror directory.">
+            <input class="dwtreebak-run dwtreebak-tip" type="button" id="dwtreebak-move" value="MANUAL MOVE" title="Moves any new content inside the configured mirror directory into the respective locations within the configured target directory.">
+            <input class="dwtreebak-notrun dwtreebak-tip" type="button" id="dwtreebak-stop" value="STOP PROGRAM" title="Stops any running MirrorShuttle instances, this is generally safe to use without causing data loss or corruption.">
+            <div style="text-align:right;margin-right:15px;">Please always read and understand the documentation <strong>before</strong> running any operations.</div>
+            <br>
+        </span>
+    </form>
+</div>
+
+<script>
+function dwtreebakToggleCollapsible(toggle) {
+  const $collapsible = $('#ms-collapsible');
+  const $toggle = $('#ms-collapsible-toggle');
+
+  if (toggle) {
+    const isVisible = $collapsible.is(':visible');
+    $collapsible.toggle();
+    $toggle.html(!isVisible ? '&#9650;' : '&#9660;');
+    $.cookie('dwtreebakCollapsed', !isVisible ? 'false' : 'true', { expires: 1, path: '/' });
+  } else {
+    const collapsed = $.cookie('dwtreebakCollapsed') === 'true';
+    $collapsible.toggle(!collapsed);
+    $toggle.html(!collapsed ? '&#9650;' : '&#9660;');
+  }
+}
+
+
+$(document).ready(function() {
+    $('#dwtreebak-init').click(function(){
+        $('#dwtreebak-ops-cmd').val('/usr/local/emhttp/plugins/dwtreebak/scripts/init');
+        $('#dwtreebak-operations').submit();
+    });
+
+    $('#dwtreebak-move').click(function(){
+        $('#dwtreebak-ops-cmd').val('/usr/local/emhttp/plugins/dwtreebak/scripts/move');
+        $('#dwtreebak-operations').submit();
+    });
+
+    $('#dwtreebak-stop').click(function(){
+        $('#dwtreebak-ops-cmd').val('/usr/local/emhttp/plugins/dwtreebak/scripts/stop');
+        $('#dwtreebak-operations').submit();
+    });
+
+    dwtreebakToggleCollapsible(false);
+});
+</script>
