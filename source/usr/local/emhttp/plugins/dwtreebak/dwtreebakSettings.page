@@ -37,7 +37,7 @@ require_once '/usr/local/emhttp/plugins/dwtreebak/include/dwtreebak_config.php';
     </dl>
 
     <dl>
-        <dt>Treeball Backend:</dt>
+        <dt>Tree Backup Backend:</dt>
         <dd>
             <strong><?= isset($dwtreebak_backend) && $dwtreebak_backend ? $dwtreebak_backend : "n/a" ?></strong>
         </dd>
