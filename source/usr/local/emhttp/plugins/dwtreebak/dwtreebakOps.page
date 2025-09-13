@@ -67,7 +67,7 @@ Markdown="false"
     </tbody>
 </table>
 
-<div style="max-height: 300px; overflow-y: auto; border: 1px solid #ccc;">
+<div style="max-height: 500px; overflow-y: auto; border: 1px solid #ccc;">
   <table class="tablesorter" style="width:100%; border-collapse: collapse;">
     <thead>
       <tr>
